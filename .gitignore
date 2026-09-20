@@ -8,8 +8,9 @@ venv/
 
 # Local configuration and runtime data
 .env
-DigRecSys/local_settings.py
-/media/
+data/raw/
+media/avatars
+docs
 
 # IDE
 .idea/

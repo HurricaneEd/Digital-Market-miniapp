@@ -3,6 +3,8 @@ import time
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from pathlib import Path
+from openpyxl.worksheet.table import Table, TableStyleInfo
+from openpyxl.styles import Alignment, Font, PatternFill
 
 import requests
 from lxml import etree
@@ -13,18 +15,12 @@ RAW_OUTPUT_ROOT = PROJECT_ROOT / 'data' / 'raw'
 
 CATEGORY_MAP = {
     'digital_camera': '数码相机',
-    'cell_phone': '智能手机',
-    'mice': '鼠标',
-    'microphone': '耳机',
-    'pocketpower': '移动电源',
-    'tablepc': '平板电脑',
 }
 
 HEADERS = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
-                  '(KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36',
+    'User-Agent': '替换为自己的',
     'Referer': 'https://detail.zol.com.cn/',
-    'cookie': 'm_area_city_new=quanzhou; m_area_cityId_new=202; m_area_provinceId_new=33; lv=1788420737; vn=1; ip_ck=4cCH4P72j7QuNjc2NzQxLjE3ODg0MjA3Mzg%3D; z_pro_city=s_provice%3Dfujian%26s_city%3Dquanzhou; realLocationId=137405; userFidLocationId=137405; questionnaire_pv=1788393602; listSubcateId=57; z_day=icnmo11564=1&rdetail=3'
+    'cookie': '替换为自己的'
 }
 
 session = requests.Session()
@@ -152,8 +148,6 @@ def _build_snapshot(items, params_list, batch_id, collected_at):
 
 
 def _write_sheet(workbook, title, headers, rows):
-    from openpyxl.worksheet.table import Table, TableStyleInfo
-    from openpyxl.styles import Alignment, Font, PatternFill
 
     sheet = workbook.create_sheet(title)
     sheet.append(headers)
