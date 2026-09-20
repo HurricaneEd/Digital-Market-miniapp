@@ -1,0 +1,68 @@
+<view class="order-detail-page">
+  <view class="state-panel" wx:if="{{ loading }}"><van-loading size="24px">订单加载中</van-loading></view>
+  <view class="state-panel error-text" wx:elif="{{ error }}">
+    <text>{{ error }}</text>
+    <van-button size="small" plain type="primary" bindtap="retry">重试</van-button>
+  </view>
+  <van-empty wx:elif="{{ !order }}" description="订单不存在" />
+  <block wx:else>
+    <view class="summary-card">
+      <view class="summary-status">{{ order.statusLabel }}</view>
+      <view class="summary-order-sn">订单号：{{ order.order_sn }}</view>
+      <view class="summary-total">¥{{ order.displayTotalPrice }}</view>
+    </view>
+
+    <view class="detail-section">
+      <view class="section-title">收货信息</view>
+      <view class="address-text">{{ order.address_info || '暂无收货地址信息' }}</view>
+    </view>
+
+    <view class="detail-section">
+      <view class="section-title">商品明细</view>
+      <view wx:for="{{ order.displayItems }}" wx:key="id" class="detail-item">
+        <image wx:if="{{ item.imageUrl }}" class="item-image" src="{{ item.imageUrl }}" mode="aspectFill" />
+        <view wx:else class="item-image image-placeholder">暂无图片</view>
+        <view class="item-content">
+          <view class="item-name">{{ item.product_name }}</view>
+          <view class="item-bottom">
+            <text>¥{{ item.displayPrice }}</text>
+            <text>x{{ item.count }}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="detail-section note-section">
+      <view class="section-title">订单说明</view>
+      <view class="note-text">当前项目的支付接口为后端模拟支付，尚未接入真实微信支付。</view>
+    </view>
+
+    <van-goods-action wx:if="{{ order.canCancel || order.canPay || order.canConfirmReceive }}">
+      <van-goods-action-button
+        wx:if="{{ order.canCancel }}"
+        plain
+        color="#111111"
+        text="取消订单"
+        loading="{{ actionType === 'cancel' }}"
+        disabled="{{ actionLoading }}"
+        bind:click="cancelOrder"
+      />
+      <van-goods-action-button
+        wx:if="{{ order.canPay }}"
+        color="#111111"
+        text="模拟支付"
+        loading="{{ actionType === 'pay' }}"
+        disabled="{{ actionLoading }}"
+        bind:click="payOrder"
+      />
+      <van-goods-action-button
+        wx:if="{{ order.canConfirmReceive }}"
+        color="#111111"
+        text="确认收货"
+        loading="{{ actionType === 'confirm' }}"
+        disabled="{{ actionLoading }}"
+        bind:click="confirmReceive"
+      />
+    </van-goods-action>
+  </block>
+</view>

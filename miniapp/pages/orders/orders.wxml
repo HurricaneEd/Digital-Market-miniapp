@@ -1,0 +1,34 @@
+<view class="orders-page">
+  <view class="state-panel" wx:if="{{ loading }}"><van-loading size="24px">订单加载中</van-loading></view>
+  <view class="state-panel error-text" wx:elif="{{ error }}">
+    <text>{{ error }}</text>
+    <van-button wx:if="{{ !orders.length }}" size="small" plain type="primary" bindtap="goLogin">去登录</van-button>
+  </view>
+  <van-empty wx:elif="{{ !orders.length }}" description="暂无订单" />
+  <view wx:else class="order-list">
+    <view
+      wx:for="{{ orders }}"
+      wx:key="order_sn"
+      class="order-card"
+      data-order-sn="{{ item.order_sn }}"
+      bindtap="openOrder"
+    >
+      <view class="order-header">
+        <text class="order-sn">{{ item.order_sn }}</text>
+        <van-tag plain round color="#111111">{{ item.statusLabel }}</van-tag>
+      </view>
+      <view class="order-item" wx:if="{{ item.firstItem }}">
+        <image wx:if="{{ item.firstItem.imageUrl }}" class="item-image" src="{{ item.firstItem.imageUrl }}" mode="aspectFill" />
+        <view wx:else class="item-image image-placeholder">暂无图片</view>
+        <view class="item-info">
+          <view class="item-name">{{ item.firstItem.product_name }}</view>
+          <view class="item-count">共 {{ item.itemCount }} 件</view>
+        </view>
+      </view>
+      <view class="order-footer">
+        <text class="order-date">{{ item.created_at }}</text>
+        <text class="order-total">¥{{ item.displayTotalPrice }}</text>
+      </view>
+    </view>
+  </view>
+</view>

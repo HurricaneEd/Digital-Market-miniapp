@@ -1,0 +1,46 @@
+<view class="my-page">
+  <view class="profile-card" wx:if="{{ loggedIn }}">
+    <van-uploader
+      accept="image"
+      max-count="1"
+      max-size="{{ avatarMaxSize }}"
+      disabled="{{ avatarUploading }}"
+      show-upload="{{ false }}"
+      preview-image="{{ false }}"
+      bind:after-read="afterReadAvatar"
+      bind:oversize="onAvatarOversize"
+    >
+      <view class="avatar-control">
+        <image wx:if="{{ avatarUrl }}" class="avatar" src="{{ avatarUrl }}" mode="aspectFill" />
+        <view wx:else class="avatar avatar-placeholder">{{ profileInitial }}</view>
+        <view class="avatar-edit-badge" wx:if="{{ !avatarUploading }}">
+          <van-icon name="photograph" size="14px" />
+        </view>
+        <view class="avatar-uploading" wx:if="{{ avatarUploading }}">
+          <van-loading color="#ffffff" size="22px" />
+        </view>
+      </view>
+    </van-uploader>
+    <view class="profile-info">
+      <view class="profile-name">{{ profile.nickname || profile.username }}</view>
+      <view class="profile-account">{{ profile.username }}</view>
+      <view class="avatar-hint">点击头像更换</view>
+    </view>
+  </view>
+
+  <view class="login-card" wx:else>
+    <view class="login-card-title">登录后管理你的订单</view>
+    <view class="login-card-subtitle">浏览商品无需登录，加入购物车和查看订单需要登录</view>
+    <van-button type="primary" color="#111111" size="small" bindtap="goLogin">立即登录</van-button>
+  </view>
+
+  <view class="state-error" wx:if="{{ error }}">{{ error }}</view>
+  <view class="loading-panel" wx:if="{{ loading }}"><van-loading size="24px">加载中</van-loading></view>
+
+  <view class="menu-card">
+    <van-cell title="我的订单" is-link bindtap="goOrders" />
+    <van-cell title="用户信息修改" is-link bindtap="goProfileEdit" />
+  </view>
+
+  <van-button wx:if="{{ loggedIn }}" class="logout-button" plain type="danger" block bindtap="logout">退出登录</van-button>
+</view>

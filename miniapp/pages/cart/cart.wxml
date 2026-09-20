@@ -1,0 +1,111 @@
+<view class="cart-page">
+  <view class="state-panel" wx:if="{{ loading && !items.length }}">
+    <van-loading size="24px">购物车加载中</van-loading>
+  </view>
+
+  <view class="state-panel" wx:elif="{{ needLogin }}">
+    <van-empty description="登录后查看购物车" />
+    <van-button size="small" type="primary" bind:click="goLogin">去登录</van-button>
+  </view>
+
+  <view class="state-panel error-text" wx:elif="{{ error && !items.length }}">
+    <text>{{ error }}</text>
+    <van-button size="small" plain type="primary" bind:click="retry">重试</van-button>
+  </view>
+
+  <van-empty wx:elif="{{ !items.length }}" description="购物车还是空的" />
+
+  <block wx:else>
+    <view class="cart-count">共 {{ cartCount }} 件商品</view>
+    <view class="cart-list">
+      <van-swipe-cell
+        wx:for="{{ items }}"
+        wx:key="id"
+        right-width="{{ 72 }}"
+        name="{{ item.id }}"
+        disabled="{{ item.updating || bulkUpdating }}"
+      >
+        <view class="cart-item">
+          <van-checkbox
+            value="{{ item.selected }}"
+            disabled="{{ item.updating || bulkUpdating }}"
+            checked-color="#111111"
+            data-cart-item-id="{{ item.id }}"
+            bind:change="onSelectedChange"
+          />
+
+          <view
+            class="product-main"
+            data-prod-id="{{ item.product.prod_id }}"
+            bindtap="openProduct"
+          >
+            <image
+              wx:if="{{ item.product.imageUrl }}"
+              class="product-image"
+              src="{{ item.product.imageUrl }}"
+              mode="aspectFill"
+            />
+            <view wx:else class="product-image image-placeholder">暂无图片</view>
+            <view class="product-info">
+              <view class="product-name">{{ item.product.name }}</view>
+              <view class="product-price">¥{{ item.product.displayPrice }}</view>
+              <view class="stock-label {{ item.stockIssue ? 'stock-error' : '' }}">
+                {{ item.product.is_active ? '库存 ' + item.product.stock : '商品已下架' }}
+              </view>
+            </view>
+          </view>
+
+          <view class="item-actions">
+            <van-stepper
+              value="{{ item.count }}"
+              min="1"
+              max="{{ item.maxCount }}"
+              integer
+              async-change
+              disabled="{{ item.updating || bulkUpdating }}"
+              data-cart-item-id="{{ item.id }}"
+              bind:change="onQuantityChange"
+              bind:overlimit="onQuantityOverlimit"
+            />
+            <view class="subtotal">小计 ¥{{ item.displaySubtotal }}</view>
+          </view>
+          <view class="stock-warning" wx:if="{{ item.stockIssue }}">
+            <text wx:if="{{ !item.product.is_active }}">该商品已下架，请删除</text>
+            <text wx:elif="{{ item.product.stock <= 0 }}">该商品暂时无货，请删除</text>
+            <block wx:else>
+              <text>数量超过库存，请调整</text>
+              <van-button
+                size="mini"
+                type="warning"
+                data-cart-item-id="{{ item.id }}"
+                bind:click="adjustToStock"
+              >调整为 {{ item.product.stock }} 件</van-button>
+            </block>
+          </view>
+        </view>
+
+        <view
+          slot="right"
+          class="swipe-delete"
+          data-cart-item-id="{{ item.id }}"
+          catchtap="deleteItem"
+        >删除</view>
+      </van-swipe-cell>
+    </view>
+
+    <van-submit-bar
+      price="{{ selectedTotalCents }}"
+      button-text="结算"
+      button-type="primary"
+      disabled="{{ !canCheckout || bulkUpdating }}"
+      bind:submit="checkout"
+    >
+      <van-checkbox
+        value="{{ allSelected }}"
+        disabled="{{ bulkUpdating }}"
+        checked-color="#111111"
+        bind:change="onSelectAll"
+      >全选（{{ selectedCount }}）</van-checkbox>
+    </van-submit-bar>
+  </block>
+</view>

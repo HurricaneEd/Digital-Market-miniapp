@@ -12,8 +12,6 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from pathlib import Path
 
-from dashscope.common.constants import DASHSCOPE_API_KEY_ENV
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -28,7 +26,16 @@ SECRET_KEY = 'django-insecure-%bha&84d!ocajof9612th$*hyoy3)7mdyu%$ar7c=acev_9ied
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-DASHSCOPE_API_KEY = 'sk-80ad5bc355e84385b1eceff3d1674353'
+
+# 新环境优先通过进程环境变量覆盖本地开发默认值。
+SECRET_KEY = os.environ.get('DIGRECSYS_SECRET_KEY', SECRET_KEY)
+DEBUG = os.environ.get('DIGRECSYS_DEBUG', str(DEBUG)).lower() in {'1', 'true', 'yes', 'on'}
+if os.environ.get('DIGRECSYS_ALLOWED_HOSTS'):
+    ALLOWED_HOSTS = [
+        host.strip()
+        for host in os.environ['DIGRECSYS_ALLOWED_HOSTS'].split(',')
+        if host.strip()
+    ]
 AUTH_USER_MODEL = 'Users.User'
 # Application definition
 
@@ -41,10 +48,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'drf_yasg',
     'corsheaders',
     'Users',
     'Product',
-    'Recomm',
     'Orders'
 ]
 
@@ -102,6 +109,17 @@ DATABASES = {
         'PORT': '3306',
     }
 }
+
+for database_key, environment_key in {
+    'NAME': 'DIGRECSYS_DB_NAME',
+    'USER': 'DIGRECSYS_DB_USER',
+    'PASSWORD': 'DIGRECSYS_DB_PASSWORD',
+    'HOST': 'DIGRECSYS_DB_HOST',
+    'PORT': 'DIGRECSYS_DB_PORT',
+}.items():
+    environment_value = os.environ.get(environment_key)
+    if environment_value is not None:
+        DATABASES['default'][database_key] = environment_value
 
 
 # Password validation

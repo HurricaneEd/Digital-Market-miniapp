@@ -1,0 +1,83 @@
+<view class="category-page">
+  <view class="state-panel" wx:if="{{ loadingCategories }}">
+    <van-loading size="24px">分类加载中</van-loading>
+  </view>
+
+  <view class="state-panel error-text" wx:elif="{{ categoryError }}">
+    <text>{{ categoryError }}</text>
+    <van-button size="small" plain type="primary" bindtap="retryCategories">重试</van-button>
+  </view>
+
+  <van-empty wx:elif="{{ !categories.length }}" description="暂无商品分类" />
+
+  <view class="category-layout" wx:else>
+    <scroll-view class="category-nav-scroll" scroll-y enhanced show-scrollbar="{{ false }}">
+      <van-sidebar active-key="{{ activeCategory }}" bind:change="onCategoryChange">
+        <van-sidebar-item
+          wx:for="{{ categories }}"
+          wx:key="id"
+          title="{{ item.name }}"
+        />
+      </van-sidebar>
+    </scroll-view>
+
+    <scroll-view
+      class="category-product-scroll"
+      scroll-y
+      enhanced
+      show-scrollbar="{{ false }}"
+      lower-threshold="160"
+      refresher-enabled
+      refresher-triggered="{{ refreshing }}"
+      bindscrolltolower="onProductScrollToLower"
+      bindrefresherrefresh="onRefresh"
+    >
+      <view class="category-content">
+        <view class="category-heading">
+          <view class="category-title">{{ selectedCategoryName }}</view>
+          <view class="category-count" wx:if="{{ !loadingProducts }}">共 {{ total }} 件</view>
+        </view>
+
+        <view class="product-state" wx:if="{{ loadingProducts && !products.length }}">
+          <van-loading size="22px">商品加载中</van-loading>
+        </view>
+
+        <view class="product-state error-text" wx:elif="{{ productError && !products.length }}">
+          <text>{{ productError }}</text>
+          <van-button size="small" plain type="primary" bindtap="retryProducts">重试</van-button>
+        </view>
+
+        <van-empty wx:elif="{{ !products.length }}" description="该分类暂无商品" />
+
+        <view class="category-product-grid" wx:else>
+          <view
+            class="product-card"
+            wx:for="{{ products }}"
+            wx:key="prod_id"
+            data-prod-id="{{ item.prod_id }}"
+            bindtap="openProduct"
+          >
+            <image
+              wx:if="{{ item.imageUrl }}"
+              class="product-image"
+              src="{{ item.imageUrl }}"
+              mode="aspectFill"
+            />
+            <view wx:else class="product-image image-placeholder">暂无图片</view>
+            <view class="product-name">{{ item.name }}</view>
+            <view class="product-price">¥{{ item.displayPrice }}</view>
+          </view>
+
+          <view class="load-more error-text" wx:if="{{ productError }}">
+            <text>{{ productError }}</text>
+            <van-button size="small" plain type="primary" bindtap="retryProducts">重新加载</van-button>
+          </view>
+          <view class="load-more" wx:elif="{{ loadingMore }}">
+            <van-loading size="20px">正在加载</van-loading>
+          </view>
+          <view class="load-more" wx:elif="{{ !hasMore }}">已展示全部商品</view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+</view>

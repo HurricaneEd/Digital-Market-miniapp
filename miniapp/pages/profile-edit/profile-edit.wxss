@@ -1,0 +1,52 @@
+.profile-edit-page {
+  min-height: 100vh;
+  padding: 0 24rpx 48rpx;
+  background: #ffffff;
+  box-sizing: border-box;
+}
+
+.form-card {
+  padding: 40rpx 0 48rpx;
+  border-bottom: 1rpx solid #e5e5e5;
+  background: #ffffff;
+}
+
+.section-title {
+  color: #111111;
+  font-size: 36rpx;
+  font-weight: 500;
+}
+
+.section-description {
+  margin: 10rpx 0 20rpx;
+  color: #707072;
+  font-size: 24rpx;
+  line-height: 34rpx;
+}
+
+.form-error {
+  padding: 18rpx 0 0;
+  color: #d30005;
+  font-size: 24rpx;
+  line-height: 34rpx;
+}
+
+.submit-button {
+  margin-top: 28rpx;
+}
+
+.loading-panel,
+.load-error {
+  padding: 160rpx 24rpx;
+  color: #707072;
+  text-align: center;
+}
+
+.load-error {
+  color: #39393b;
+  font-size: 26rpx;
+}
+
+.retry-button {
+  margin-top: 28rpx;
+}

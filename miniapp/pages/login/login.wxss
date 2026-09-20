@@ -1,0 +1,59 @@
+.login-page {
+  min-height: 100vh;
+  padding: 80rpx 32rpx 48rpx;
+  background: #ffffff;
+  box-sizing: border-box;
+}
+
+.login-header {
+  margin-bottom: 56rpx;
+}
+
+.login-title {
+  color: #111111;
+  font-size: 56rpx;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.login-subtitle {
+  margin-top: 14rpx;
+  color: #707072;
+  font-size: 28rpx;
+}
+
+.form-card {
+  padding: 0;
+  background: #ffffff;
+}
+
+.form-card van-field {
+  margin-bottom: 4rpx;
+}
+
+.form-error {
+  padding: 20rpx 0 4rpx;
+  color: #d30005;
+  font-size: 25rpx;
+  line-height: 36rpx;
+}
+
+.submit-button {
+  margin-top: 40rpx;
+}
+
+.switch-mode {
+  padding-top: 28rpx;
+  color: #111111;
+  text-align: center;
+  font-size: 27rpx;
+  font-weight: 500;
+  text-decoration: underline;
+}
+
+.auth-note {
+  margin-top: 48rpx;
+  color: #707072;
+  font-size: 24rpx;
+  line-height: 36rpx;
+}

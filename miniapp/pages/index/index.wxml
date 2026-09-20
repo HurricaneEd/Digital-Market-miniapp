@@ -1,0 +1,77 @@
+<view class="home-page">
+  <view class="home-sticky-header">
+    <view
+      class="custom-nav"
+      style="height: {{ navHeight }}px; padding-top: {{ statusBarHeight }}px;"
+    >
+      <view
+        class="custom-nav-row"
+        style="height: {{ menuButtonHeight }}px; padding-right: {{ menuButtonRightGap }}px;"
+      >
+        <van-search
+          value="{{ searchKeyword }}"
+          shape="round"
+          placeholder="搜索商品或品牌"
+          bind:change="onSearchChange"
+          bind:search="onSearch"
+          bind:clear="onSearchClear"
+        />
+      </view>
+    </view>
+
+    <van-tabs active="{{ active }}" bind:change="onChange" animated>
+      <van-tab title="全部"></van-tab>
+      <van-tab
+        wx:for="{{ categories }}"
+        wx:key="id"
+        title="{{ item.name }}"
+      ></van-tab>
+    </van-tabs>
+  </view>
+  <view class="inline-error" wx:if="{{ !categories.length && !loading }}">暂无分类数据</view>
+
+  <view class="section product-section">
+    <view class="section-heading">
+      <text class="section-title">{{ sectionTitle }}</text>
+    </view>
+
+    <view class="state-panel" wx:if="{{ loading && !products.length }}">
+      <van-loading size="24px">商品加载中</van-loading>
+    </view>
+    <view class="state-panel error-text" wx:elif="{{ error && !products.length }}">
+      <text>{{ error }}</text>
+      <van-button size="small" plain type="primary" bindtap="retryProducts">重试</van-button>
+    </view>
+    <van-empty
+      wx:elif="{{ !products.length }}"
+      description="{{ searchKeyword ? '没有找到相关商品' : (category ? '该分类暂无商品' : '暂无商品') }}"
+    />
+    <view class="product-grid" wx:else>
+      <view
+        class="product-card"
+        wx:for="{{ products }}"
+        wx:key="prod_id"
+        data-prod-id="{{ item.prod_id }}"
+        bindtap="openProduct"
+      >
+        <image wx:if="{{ item.imageUrl }}" class="product-image" src="{{ item.imageUrl }}" mode="aspectFill" />
+        <view wx:else class="product-image image-placeholder">暂无图片</view>
+        <view class="product-content">
+          <view class="product-name">{{ item.name }}</view>
+          <view class="product-meta">
+            <text class="product-price">¥{{ item.displayPrice }}</text>
+            <text class="product-stock">{{ item.stockLabel }}</text>
+          </view>
+        </view>
+      </view>
+      <view class="load-more error-text" wx:if="{{ error }}">
+        <text>{{ error }}</text>
+        <van-button size="small" plain type="primary" bindtap="retryProducts">重新加载</van-button>
+      </view>
+      <view class="load-more" wx:elif="{{ loadingMore }}">
+        <van-loading size="20px">正在加载更多商品</van-loading>
+      </view>
+      <view class="load-more" wx:elif="{{ !hasMore }}">已展示全部商品</view>
+    </view>
+  </view>
+</view>

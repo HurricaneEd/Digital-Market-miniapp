@@ -1,0 +1,48 @@
+page {
+  --button-border-radius: 999px;
+  --button-default-height: 48px;
+  --button-small-height: 40px;
+  --button-mini-height: 32px;
+  --button-primary-background-color: #111111;
+  --button-primary-border-color: #111111;
+  --button-danger-background-color: #111111;
+  --button-danger-border-color: #111111;
+  --button-warning-background-color: #111111;
+  --button-warning-border-color: #111111;
+  --checkbox-checked-icon-color: #111111;
+  --search-background-color: #f5f5f5;
+  --search-action-text-color: #111111;
+  --search-input-height: 40px;
+  --tabs-bottom-bar-color: #111111;
+  --tabs-bottom-bar-height: 2px;
+  --tabs-line-height: 48px;
+  --tab-active-text-color: #111111;
+  --tab-text-color: #707072;
+  --tag-border-radius: 999px;
+  --tag-primary-color: #111111;
+  --field-label-color: #39393b;
+  --field-input-text-color: #111111;
+  --field-placeholder-text-color: #707072;
+  --cell-text-color: #111111;
+  --cell-label-color: #707072;
+  --cell-right-icon-color: #707072;
+  --cell-active-color: #f5f5f5;
+  --cell-vertical-padding: 14px;
+  --submit-bar-price-color: #d30005;
+  --submit-bar-background-color: #ffffff;
+  --submit-bar-height: 56px;
+  --submit-bar-button-height: 48px;
+  background: #ffffff;
+  color: #111111;
+  font-size: 28rpx;
+  line-height: 1.5;
+}
+
+button::after {
+  border: none;
+}
+
+view,
+image {
+  box-sizing: border-box;
+}

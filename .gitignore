@@ -1,0 +1,19 @@
+/data/raw/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Local configuration and runtime data
+.env
+DigRecSys/local_settings.py
+/media/
+
+# IDE
+.idea/
+
+# WeChat mini program dependencies and build output
+/miniapp/node_modules/
+/miniapp/miniprogram_npm/

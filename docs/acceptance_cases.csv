@@ -1,0 +1,27 @@
+ID,Module,Feature,Preconditions,Steps,Expected,Actual,Result,Issue,Retest
+SYS-001,System,Django system check,"项目依赖和数据库配置可用","执行 python manage.py check","命令成功且无系统问题","System check identified no issues (0 silenced).",PASS,,不需要
+SYS-002,System,Migration consistency,"当前迁移文件可读取","执行 python manage.py makemigrations --check --dry-run","没有待生成迁移","No changes detected.",PASS,,不需要
+TEST-001,Product,Product application tests,"测试数据库可创建","执行 python manage.py test Product","Product 测试全部通过","Ran 4 tests; OK.",PASS,,不需要
+TEST-002,Orders,Orders application tests,"测试数据库可创建","执行 python manage.py test Orders","Orders 测试全部通过","Ran 6 tests; OK.",PASS,,不需要
+TEST-003,Users,Users application tests,"测试数据库可创建","执行 python manage.py test Users","Users 测试全部通过","Ran 2 tests; OK.",PASS,,不需要
+TEST-004,System,Full regression tests,"测试数据库可创建","执行 python manage.py test","全量测试全部通过","Ran 12 tests; OK.",PASS,,不需要
+PROD-001,Product,Product list API,"数据库存在可售商品","GET /api/products/","返回商品列表和分页字段","HTTP 200; count=48.",PASS,,不需要
+PROD-002,Product,Product search API,"存在可搜索商品","GET /api/products/?search=<实际商品名前缀>","返回 HTTP 200，搜索请求可处理","HTTP 200.",PASS,,不需要
+PROD-003,Product,Category filter API,"存在商品分类","GET /api/products/?category=<实际分类编码>","返回 HTTP 200，分类参数可处理","HTTP 200.",PASS,,不需要
+PROD-004,Product,Product pagination,"商品列表超过一页","GET /api/products/?page=2","返回第二页且 HTTP 200","HTTP 200; count=48.",PASS,,不需要
+PROD-005,Product,Product detail and categories,"存在实际商品和分类","GET /api/products/<prod_id>/；GET /api/categories/","详情和分类接口均返回 HTTP 200","商品详情 HTTP 200，实际 prod_id=1214176；分类 HTTP 200.",PASS,,不需要
+USER-001,Users,Register login current user and profile,"使用事务内临时账号，不污染现有数据","POST /api/users/register/；POST /api/users/login/；携带 Token GET /api/users/me/ 和 /api/users/profile/","注册、登录、当前用户和资料读取成功","注册 201；登录 200；me 200；profile 200；事务已回滚.",PASS,,不需要
+QUALITY-001,WeChat Mini Program,Static source structure,"小程序源文件和 Vant 构建产物存在","运行 node --check；解析业务 JSON；检查 7 个页面文件和页面组件引用","业务 JS/JSON 可解析，页面文件齐全，组件引用存在","13 个业务 JS、12 个业务 JSON、7 个页面、32 个组件引用检查通过.",PASS,,不需要
+MINI-001,WeChat Mini Program,Home opens,"微信开发者工具已导入 miniapp 且后端已启动","打开首页","页面编译成功，搜索栏、分类 tabs、精选商品可见","当前环境未执行微信开发者工具操作。",NEEDS_MANUAL,,在微信开发者工具执行
+MINI-002,WeChat Mini Program,Product list,"首页可打开","进入商品列表","商品列表、分页状态和空/错状态正常","当前环境未执行微信开发者工具操作。",NEEDS_MANUAL,,在微信开发者工具执行
+MINI-003,WeChat Mini Program,Search,"商品列表可打开","输入商品名或品牌并提交搜索","请求带搜索参数，结果和无结果状态正确","当前环境未执行微信开发者工具操作。",NEEDS_MANUAL,,在微信开发者工具执行
+MINI-004,WeChat Mini Program,Category filter,"分类接口返回分类","点击首页或列表页分类 tabs","分类切换或跳转后显示对应商品","当前环境未执行微信开发者工具操作。",NEEDS_MANUAL,,在微信开发者工具执行
+MINI-005,WeChat Mini Program,Product detail,"商品列表存在商品","点击商品卡片","详情页显示主图、价格、库存、品牌、分类和参数","当前环境未执行微信开发者工具操作。",NEEDS_MANUAL,,在微信开发者工具执行
+MINI-006,WeChat Mini Program,Request error and retry,"准备不可用 API 地址或断开网络","打开首页/商品列表并点击重试","显示中文错误提示，重试按钮可用","当前环境未执行微信开发者工具操作。",NEEDS_MANUAL,,在微信开发者工具执行
+MINI-007,WeChat Mini Program,Empty state,"使用无商品或无订单数据环境","打开对应页面","显示空状态而不是空白或报错","当前环境未执行微信开发者工具操作。",NEEDS_MANUAL,,在微信开发者工具执行
+MINI-008,WeChat Mini Program,Page navigation,"首页和列表可打开","依次进入列表、详情、登录、个人中心、订单列表、订单详情","页面跳转路径正确且返回正常","当前环境未执行微信开发者工具操作。",NEEDS_MANUAL,,在微信开发者工具执行
+MINI-009,WeChat Mini Program,Sticky header visual behavior,"首页和列表有足够内容可滚动","上下滚动首页和商品列表","搜索栏与 tabs 吸顶，滚动内容不覆盖导航","当前环境未执行微信开发者工具操作。",NEEDS_MANUAL,,在微信开发者工具执行
+MINI-010,WeChat Mini Program,Login cart and orders,"存在可用账号和地址/购物车数据","登录后从详情加入购物车，再打开订单页面","Token 生效，购物车和订单数据正常展示","当前环境未执行微信开发者工具操作。",NEEDS_MANUAL,,在微信开发者工具执行
+ADMIN-001,Admin UI,Product management page,"需要后台商品管理页面","打开后台商品列表并执行新增、编辑、校验、保存、回显","存在可操作的后台页面并完成上述流程","项目未提供可操作的后台商品管理页面；仅发现管理 API 路由。",NOT_IMPLEMENTED,,后续明确后台页面需求后补测
+ADMIN-002,Admin UI,User management page,"需要后台用户管理页面","打开后台用户列表并执行搜索、筛选、分页、编辑","存在可操作的后台页面并完成上述流程","项目未提供可操作的后台用户管理页面；仅发现管理 API 路由。",NOT_IMPLEMENTED,,后续明确后台页面需求后补测
+ADMIN-003,Admin UI,Order management page,"需要后台订单管理页面","打开后台订单列表并执行筛选、详情、状态操作","存在可操作的后台页面并完成上述流程","项目未提供可操作的后台订单管理页面；仅发现管理 API 路由。",NOT_IMPLEMENTED,,后续明确后台页面需求后补测

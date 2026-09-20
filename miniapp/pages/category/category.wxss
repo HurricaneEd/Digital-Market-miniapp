@@ -1,0 +1,144 @@
+.category-page {
+  min-height: 100vh;
+  background: #ffffff;
+}
+
+.state-panel {
+  padding: 160rpx 24rpx;
+  color: #707072;
+  text-align: center;
+}
+
+.state-panel van-button,
+.product-state van-button,
+.load-more van-button {
+  display: block;
+  width: 180rpx;
+  margin: 20rpx auto 0;
+}
+
+.error-text {
+  color: #d30005;
+}
+
+.category-layout {
+  --sidebar-width: 180rpx;
+  --sidebar-background-color: #f5f5f5;
+  --sidebar-text-color: #39393b;
+  --sidebar-font-size: 14px;
+  --sidebar-line-height: 20px;
+  --sidebar-padding: 20px 12px;
+  --sidebar-active-color: #e5e5e5;
+  --sidebar-selected-border-color: #111111;
+  --sidebar-selected-text-color: #111111;
+  --sidebar-selected-background-color: #ffffff;
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.category-nav-scroll {
+  flex: 0 0 180rpx;
+  width: 180rpx;
+  height: 100%;
+  background: #f5f5f5;
+}
+
+.category-product-scroll {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  background: #ffffff;
+}
+
+.category-content {
+  min-height: 100%;
+  padding: 32rpx 24rpx 48rpx;
+}
+
+.category-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 28rpx;
+}
+
+.category-title {
+  color: #111111;
+  font-size: 40rpx;
+  font-weight: 500;
+  line-height: 48rpx;
+}
+
+.category-count {
+  color: #707072;
+  font-size: 22rpx;
+}
+
+.product-state {
+  padding: 120rpx 12rpx;
+  color: #707072;
+  font-size: 24rpx;
+  text-align: center;
+}
+
+.category-product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8rpx;
+}
+
+.product-card {
+  min-width: 0;
+  padding-bottom: 32rpx;
+  background: #ffffff;
+}
+
+.product-card:active {
+  opacity: 0.72;
+  transform: scale(0.99);
+}
+
+.product-image {
+  display: block;
+  width: 100%;
+  height: 257rpx;
+  background: #f5f5f5;
+}
+
+.image-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #707072;
+  font-size: 22rpx;
+}
+
+.product-name {
+  display: -webkit-box;
+  overflow: hidden;
+  height: 76rpx;
+  margin-top: 14rpx;
+  color: #111111;
+  font-size: 26rpx;
+  font-weight: 500;
+  line-height: 38rpx;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.product-price {
+  margin-top: 10rpx;
+  color: #d30005;
+  font-size: 28rpx;
+  font-weight: 500;
+}
+
+.load-more {
+  grid-column: 1 / -1;
+  padding: 28rpx 12rpx;
+  color: #707072;
+  font-size: 23rpx;
+  text-align: center;
+}

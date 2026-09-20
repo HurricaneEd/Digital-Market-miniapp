@@ -1,0 +1,149 @@
+.confirm-page {
+  min-height: 100vh;
+  padding: 0 24rpx 140rpx;
+  background: #ffffff;
+  box-sizing: border-box;
+}
+
+.state-panel {
+  padding: 120rpx 24rpx;
+  color: #707072;
+  text-align: center;
+}
+
+.state-panel van-button {
+  display: block;
+  width: 160rpx;
+  margin: 24rpx auto 0;
+}
+
+.error-text,
+.stock-error {
+  color: #d30005;
+}
+
+.section-card {
+  padding: 40rpx 0 48rpx;
+  border-bottom: 1rpx solid #e5e5e5;
+  background: #ffffff;
+}
+
+.section-header,
+.address-item,
+.address-contact,
+.item-bottom {
+  display: flex;
+  align-items: center;
+}
+
+.section-header,
+.address-item,
+.item-bottom {
+  justify-content: space-between;
+}
+
+.section-title {
+  color: #111111;
+  font-size: 36rpx;
+  font-weight: 500;
+}
+
+.address-list {
+  margin-top: 18rpx;
+}
+
+.address-item {
+  gap: 20rpx;
+  margin-top: 12rpx;
+  padding: 24rpx 20rpx;
+  border: 1rpx solid #cacacb;
+}
+
+.address-selected {
+  border: 2rpx solid #111111;
+  background: #f5f5f5;
+}
+
+.address-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.address-contact {
+  gap: 18rpx;
+  color: #111111;
+  font-weight: 500;
+}
+
+.address-detail {
+  margin-top: 12rpx;
+  color: #39393b;
+  line-height: 38rpx;
+}
+
+.address-form {
+  margin-top: 24rpx;
+  padding-top: 16rpx;
+  border-top: 1rpx solid #e5e5e5;
+}
+
+.default-row {
+  padding: 22rpx 16rpx;
+}
+
+.checkout-item {
+  display: flex;
+  padding: 22rpx 0;
+  border-bottom: 1rpx solid #e5e5e5;
+}
+
+.checkout-item:last-child {
+  border-bottom: none;
+}
+
+.item-image {
+  flex: 0 0 144rpx;
+  width: 144rpx;
+  height: 144rpx;
+  background: #f5f5f5;
+}
+
+.image-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #707072;
+  font-size: 20rpx;
+}
+
+.item-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+  margin-left: 20rpx;
+}
+
+.item-name {
+  color: #111111;
+  font-size: 28rpx;
+  line-height: 40rpx;
+}
+
+.item-bottom {
+  color: #39393b;
+  font-size: 25rpx;
+}
+
+.stock-error {
+  margin-top: 10rpx;
+  font-size: 22rpx;
+}
+
+.order-note {
+  padding: 0 12rpx 24rpx;
+  color: #707072;
+  font-size: 23rpx;
+  line-height: 36rpx;
+}

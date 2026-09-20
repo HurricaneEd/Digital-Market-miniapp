@@ -1,0 +1,94 @@
+<view class="profile-edit-page">
+  <view class="loading-panel" wx:if="{{ loading }}">
+    <van-loading size="24px">加载用户信息</van-loading>
+  </view>
+
+  <view class="load-error" wx:elif="{{ loadError }}">
+    <view>{{ loadError }}</view>
+    <van-button class="retry-button" size="small" plain type="primary" bindtap="retryLoad">重新加载</van-button>
+  </view>
+
+  <block wx:else>
+    <view class="form-card">
+      <view class="section-title">基本信息</view>
+      <view class="section-description">用户名、邮箱和手机号均可用于登录</view>
+      <van-field
+        value="{{ username }}"
+        label="用户名"
+        maxlength="150"
+        placeholder="请输入用户名"
+        clearable
+        data-field="username"
+        bind:change="setProfileField"
+      />
+      <van-field
+        value="{{ email }}"
+        label="邮箱"
+        type="text"
+        placeholder="请输入邮箱"
+        clearable
+        data-field="email"
+        bind:change="setProfileField"
+      />
+      <van-field
+        value="{{ phone }}"
+        label="手机号"
+        type="number"
+        maxlength="11"
+        placeholder="请输入手机号"
+        clearable
+        data-field="phone"
+        bind:change="setProfileField"
+      />
+      <view class="form-error" wx:if="{{ profileError }}">{{ profileError }}</view>
+      <van-button
+        class="submit-button"
+        block
+        color="#111111"
+        loading="{{ savingProfile }}"
+        bindtap="saveProfile"
+      >保存基本信息</van-button>
+    </view>
+
+    <view class="form-card">
+      <view class="section-title">修改密码</view>
+      <view class="section-description">为保障账号安全，需要先验证当前密码</view>
+      <van-field
+        value="{{ oldPassword }}"
+        label="当前密码"
+        type="password"
+        placeholder="请输入当前密码"
+        clearable
+        data-field="oldPassword"
+        bind:change="setPasswordField"
+      />
+      <van-field
+        value="{{ newPassword }}"
+        label="新密码"
+        type="password"
+        placeholder="至少 6 位"
+        clearable
+        data-field="newPassword"
+        bind:change="setPasswordField"
+      />
+      <van-field
+        value="{{ confirmPassword }}"
+        label="确认密码"
+        type="password"
+        placeholder="请再次输入新密码"
+        clearable
+        data-field="confirmPassword"
+        bind:change="setPasswordField"
+      />
+      <view class="form-error" wx:if="{{ passwordError }}">{{ passwordError }}</view>
+      <van-button
+        class="submit-button"
+        block
+        plain
+        color="#111111"
+        loading="{{ savingPassword }}"
+        bindtap="savePassword"
+      >修改密码</van-button>
+    </view>
+  </block>
+</view>

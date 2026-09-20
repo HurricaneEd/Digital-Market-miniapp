@@ -1,0 +1,129 @@
+<view class="confirm-page">
+  <view class="state-panel" wx:if="{{ loading }}">
+    <van-loading size="24px">订单信息加载中</van-loading>
+  </view>
+  <view class="state-panel error-text" wx:elif="{{ error }}">
+    <text>{{ error }}</text>
+    <van-button size="small" plain type="primary" bind:click="retry">重试</van-button>
+  </view>
+
+  <block wx:else>
+    <view class="section-card">
+      <view class="section-header">
+        <text class="section-title">收货地址</text>
+        <van-button size="mini" plain type="primary" bind:click="toggleAddressForm">
+          {{ showAddressForm ? '取消新增' : '新增地址' }}
+        </van-button>
+      </view>
+
+      <view wx:if="{{ addresses.length }}" class="address-list">
+        <view
+          wx:for="{{ addresses }}"
+          wx:key="id"
+          class="address-item {{ selectedAddressId === item.id ? 'address-selected' : '' }}"
+          data-address-id="{{ item.id }}"
+          bindtap="selectAddress"
+        >
+          <view class="address-content">
+            <view class="address-contact">
+              <text>{{ item.receiver }}</text>
+              <text>{{ item.phone }}</text>
+              <van-tag wx:if="{{ item.is_default }}" plain round color="#111111">默认</van-tag>
+            </view>
+            <view class="address-detail">{{ item.detail }}</view>
+          </view>
+          <van-icon
+            wx:if="{{ selectedAddressId === item.id }}"
+            name="success"
+            color="#111111"
+            size="20px"
+          />
+        </view>
+      </view>
+
+      <view wx:if="{{ showAddressForm }}" class="address-form">
+        <van-field
+          value="{{ addressForm.receiver }}"
+          label="收货人"
+          placeholder="请输入收货人姓名"
+          maxlength="50"
+          required
+          clearable
+          data-field="receiver"
+          bind:change="setAddressField"
+        />
+        <van-field
+          value="{{ addressForm.phone }}"
+          label="手机号"
+          type="number"
+          placeholder="请输入 11 位手机号"
+          maxlength="11"
+          required
+          clearable
+          data-field="phone"
+          bind:change="setAddressField"
+        />
+        <van-field
+          value="{{ addressForm.detail }}"
+          label="详细地址"
+          type="textarea"
+          autosize
+          maxlength="255"
+          placeholder="请输入省市区及详细地址"
+          required
+          data-field="detail"
+          bind:change="setAddressField"
+        />
+        <view class="default-row">
+          <van-checkbox
+            value="{{ addressForm.is_default }}"
+            checked-color="#111111"
+            bind:change="onDefaultChange"
+          >设为默认地址</van-checkbox>
+        </view>
+        <van-button
+          block
+          color="#111111"
+          loading="{{ savingAddress }}"
+          bind:click="saveAddress"
+        >保存并使用</van-button>
+      </view>
+    </view>
+
+    <view class="section-card">
+      <view class="section-title">商品清单</view>
+      <view wx:for="{{ items }}" wx:key="id" class="checkout-item">
+        <image
+          wx:if="{{ item.product.imageUrl }}"
+          class="item-image"
+          src="{{ item.product.imageUrl }}"
+          mode="aspectFill"
+        />
+        <view wx:else class="item-image image-placeholder">暂无图片</view>
+        <view class="item-content">
+          <view class="item-name">{{ item.product.name }}</view>
+          <view class="item-bottom">
+            <text>¥{{ item.product.displayPrice }}</text>
+            <text>x{{ item.count }}</text>
+          </view>
+          <view wx:if="{{ item.stockIssue }}" class="stock-error">
+            商品已下架或库存不足，请重新选择
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="order-note">
+      {{ checkoutMode === 'direct' ? '立即购买不会加入购物车。' : '' }}提交后将生成待支付订单，库存以提交时后端校验结果为准。
+    </view>
+
+    <van-submit-bar
+      price="{{ totalCents }}"
+      button-text="提交订单"
+      button-type="primary"
+      loading="{{ submitting }}"
+      disabled="{{ !selectedAddressId || !items.length || hasStockIssue }}"
+      bind:submit="submitOrder"
+    />
+  </block>
+</view>

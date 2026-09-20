@@ -1,147 +1,110 @@
+import random
+import string
 from rest_framework import serializers
 
-from Product.models import CleanProduct, CleanReview, Category, Brand
+from .models import Brand, Category, Product, Review
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    """商品序列化器：将 brand_id/category_id 转换为名称"""
-    brand_name = serializers.SerializerMethodField()
-    category_name = serializers.SerializerMethodField()
+    """商品读模型；固定核心字段与 all_params JSON 直接来自商品表。"""
 
-    def get_brand_name(self, obj):
-        if obj.brand_id:
-            brand = Brand.objects.filter(id=obj.brand_id).first()
-            return brand.name if brand else None
-        return None
-
-    def get_category_name(self, obj):
-        if obj.category_id:
-            category = Category.objects.filter(id=obj.category_id).first()
-            return category.name if category else None
-        return None
+    brand_name = serializers.CharField(source='brand.name', read_only=True)
+    category_name = serializers.CharField(source='category.name', read_only=True)
+    rate = serializers.SerializerMethodField()
+    comment_count = serializers.SerializerMethodField()
 
     class Meta:
-        model = CleanProduct
-        fields = '__all__'
+        model = Product
+        fields = [
+            'id', 'prod_id', 'brand', 'brand_name', 'category', 'category_name',
+            'name', 'origin', 'price', 'stock', 'is_active', 'created_at', 'updated_at',
+            'img_url', 'all_params', 'rate', 'comment_count',
+        ]
+
+    def get_rate(self, obj):
+        ratings = [review.rating for review in obj.reviews.all() if review.rating is not None]
+        return float(round(sum(ratings) / len(ratings), 2)) if ratings else 0
+
+    def get_comment_count(self, obj):
+        return obj.reviews.count()
+
+    def validate_all_params(self, value):
+        if not isinstance(value, dict):
+            raise serializers.ValidationError('all_params 必须是 JSON 对象。')
+        if any(not isinstance(params, dict) for params in value.values()):
+            raise serializers.ValidationError('all_params 的每个参数分组都必须是 JSON 对象。')
+        return value
 
 
-class AdminProductSerializer(serializers.ModelSerializer):
-    """管理员编辑商品"""
-    brand_name = serializers.SerializerMethodField()
-    category_name = serializers.SerializerMethodField()
-    # 添加 category 字段用于输出（映射自 category_id）
-    category = serializers.SerializerMethodField()
-    # 将 img_url 改为 CharField 避免 URL 验证问题
-    img_url = serializers.CharField(required=False, allow_blank=True, allow_null=True)
-    # JSONField 也需要处理
-    sub_images = serializers.JSONField(required=False, allow_null=True)
-    all_params = serializers.JSONField(required=False, allow_null=True)
-    # 时间和计算字段设置为只读
-    created_at = serializers.DateTimeField(read_only=True)
-    updated_at = serializers.DateTimeField(read_only=True)
-    rate = serializers.FloatField(read_only=True)
-    comment_count = serializers.IntegerField(read_only=True)
-    sales = serializers.IntegerField(read_only=True)
+class AdminProductSerializer(ProductSerializer):
+    """管理员商品写模型。"""
 
-    def get_brand_name(self, obj):
-        if obj.brand_id:
-            brand = Brand.objects.filter(id=obj.brand_id).first()
-            return brand.name if brand else None
-        return None
-
-    def get_category_name(self, obj):
-        if obj.category_id:
-            category = Category.objects.filter(id=obj.category_id).first()
-            return category.name if category else None
-        return None
-
-    def get_category(self, obj):
-        return obj.category_id
-
-    def to_internal_value(self, data):
-        # 需要将前端传入的 category 映射为 category_id
-        # 同时处理 brand 字段映射为 brand_id
-        # 同时处理 prod_id 字段
-        ret = {}
-        for key, value in data.items():
-            if key == 'category':
-                ret['category_id'] = value
-            elif key == 'brand':
-                ret['brand_id'] = value
-            elif key == 'prod_id':
-                ret['prod_id'] = value
-            else:
-                ret[key] = value
-        return ret
+    class Meta(ProductSerializer.Meta):
+        extra_kwargs = {
+            'prod_id': {'required': False},
+        }
 
     def create(self, validated_data):
-        from django.utils import timezone
-        import random
-        import string
-        # 为必填字段设置默认值
-        if 'created_at' not in validated_data or validated_data.get('created_at') is None:
-            validated_data['created_at'] = timezone.now()
-        if 'updated_at' not in validated_data or validated_data.get('updated_at') is None:
-            validated_data['updated_at'] = timezone.now()
-        # 确保 brand_id 有默认值
-        if 'brand_id' not in validated_data or validated_data.get('brand_id') is None:
-            validated_data['brand_id'] = 0
-        # 确保 category_id 有默认值
-        if 'category_id' not in validated_data or validated_data.get('category_id') is None:
-            validated_data['category_id'] = 0
-        # 自动生成 prod_id
-        if 'prod_id' not in validated_data or not validated_data.get('prod_id'):
-            validated_data['prod_id'] = 'P' + ''.join(random.choices(string.digits, k=10))
-        # 移除只读字段（以防万一）
-        validated_data.pop('rate', None)
-        validated_data.pop('comment_count', None)
-        validated_data.pop('sales', None)
+        validated_data['prod_id'] = validated_data.get('prod_id') or self._new_product_id()
         return super().create(validated_data)
 
-    def update(self, instance, validated_data):
-        from django.utils import timezone
-        # 为 updated_at 设置默认值
-        validated_data['updated_at'] = timezone.now()
-        # 移除只读字段
-        validated_data.pop('created_at', None)
-        validated_data.pop('rate', None)
-        validated_data.pop('comment_count', None)
-        validated_data.pop('sales', None)
-        return super().update(instance, validated_data)
+    @staticmethod
+    def _new_product_id():
+        return 'P' + ''.join(random.choices(string.digits, k=10))
 
-    class Meta:
-        model = CleanProduct
-        fields = '__all__'
-        extra_kwargs = {
-            'created_at': {'read_only': True},
-            'updated_at': {'read_only': True},
-            'rate': {'read_only': True},
-            'comment_count': {'read_only': True},
-            'sales': {'read_only': True},
-        }
+
+class ProductBatchUpdateSerializer(serializers.Serializer):
+    pids = serializers.ListField(
+        child=serializers.CharField(),
+        allow_empty=False,
+    )
+    is_active = serializers.BooleanField()
+
+
+class ProductBatchDeleteSerializer(serializers.Serializer):
+    pids = serializers.ListField(
+        child=serializers.CharField(),
+        allow_empty=False,
+    )
 
 
 class CategorySerializer(serializers.ModelSerializer):
-    """分类序列化器"""
     class Meta:
         model = Category
-        fields = ['id', 'code', 'name']
+        fields = ['id', 'parent', 'code', 'name']
+
+    def validate_parent(self, parent):
+        category_id = getattr(self.instance, 'pk', None)
+        candidate = parent
+        visited = set()
+        while parent is not None:
+            if parent.pk == category_id or parent.pk in visited:
+                raise serializers.ValidationError('分类层级不能形成循环')
+            visited.add(parent.pk)
+            parent = parent.parent
+        return candidate
 
 
 class BrandSerializer(serializers.ModelSerializer):
-    """品牌序列化器"""
     class Meta:
         model = Brand
-        fields = ['id', 'name', 'logo']
+        fields = ['id', 'name']
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    """评论序列化器"""
-    product_name = serializers.SerializerMethodField()
-
-    def get_product_name(self, obj):
-        return obj.product.name if obj.product else None
+    product_name = serializers.CharField(source='product.name', read_only=True)
+    rating = serializers.DecimalField(
+        max_digits=2,
+        decimal_places=1,
+        allow_null=True,
+        required=False,
+        coerce_to_string=False,
+    )
 
     class Meta:
-        model = CleanReview
-        fields = '__all__'
+        model = Review
+        fields = [
+            'id', 'product', 'product_name', 'user', 'author_name', 'content',
+            'rating', 'reviewed_at',
+        ]
+        read_only_fields = ['user']

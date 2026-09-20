@@ -1,0 +1,136 @@
+.my-page {
+  min-height: 100vh;
+  padding: 0 24rpx 48rpx;
+  background: #ffffff;
+}
+
+.profile-card,
+.login-card,
+.menu-card {
+  background: #ffffff;
+}
+
+.profile-card {
+  display: flex;
+  align-items: center;
+  padding: 48rpx 0;
+  border-bottom: 1rpx solid #e5e5e5;
+  color: #111111;
+}
+
+.avatar {
+  flex: 0 0 116rpx;
+  width: 116rpx;
+  height: 116rpx;
+  border-radius: 50%;
+  background: #f5f5f5;
+}
+
+.avatar-control {
+  position: relative;
+  width: 116rpx;
+  height: 116rpx;
+}
+
+.avatar-edit-badge {
+  position: absolute;
+  right: -4rpx;
+  bottom: -4rpx;
+  display: flex;
+  width: 40rpx;
+  height: 40rpx;
+  align-items: center;
+  justify-content: center;
+  border: 4rpx solid #ffffff;
+  border-radius: 50%;
+  background: #111111;
+  color: #ffffff;
+  box-sizing: border-box;
+}
+
+.avatar-uploading {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.avatar-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #111111;
+  font-size: 46rpx;
+  font-weight: 500;
+}
+
+.profile-info {
+  min-width: 0;
+  margin-left: 24rpx;
+}
+
+.profile-name {
+  overflow: hidden;
+  color: #111111;
+  font-size: 36rpx;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profile-account {
+  margin-top: 12rpx;
+  color: #707072;
+  font-size: 24rpx;
+}
+
+.avatar-hint {
+  margin-top: 8rpx;
+  color: #707072;
+  font-size: 22rpx;
+}
+
+.login-card {
+  padding: 48rpx 0;
+  border-bottom: 1rpx solid #e5e5e5;
+}
+
+.login-card-title {
+  color: #111111;
+  font-size: 40rpx;
+  font-weight: 500;
+}
+
+.login-card-subtitle {
+  margin: 14rpx 0 24rpx;
+  color: #707072;
+  font-size: 24rpx;
+  line-height: 36rpx;
+}
+
+.menu-card {
+  overflow: hidden;
+  margin-top: 24rpx;
+  border-top: 1rpx solid #e5e5e5;
+}
+
+.state-error,
+.loading-panel {
+  padding: 20rpx;
+  color: #707072;
+  text-align: center;
+}
+
+.state-error {
+  color: #d30005;
+}
+
+.logout-button {
+  margin-top: 48rpx;
+}

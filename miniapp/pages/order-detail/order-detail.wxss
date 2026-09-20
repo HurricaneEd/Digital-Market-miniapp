@@ -1,0 +1,112 @@
+.order-detail-page {
+  min-height: 100vh;
+  padding-bottom: 140rpx;
+  background: #ffffff;
+}
+
+.state-panel {
+  padding: 120rpx 24rpx;
+  color: #707072;
+  text-align: center;
+}
+
+.state-panel van-button {
+  display: block;
+  width: 160rpx;
+  margin: 24rpx auto 0;
+}
+
+.error-text {
+  color: #d30005;
+}
+
+.summary-card {
+  padding: 48rpx 24rpx;
+  border-bottom: 1rpx solid #e5e5e5;
+  background: #ffffff;
+  color: #111111;
+}
+
+.summary-status {
+  font-size: 44rpx;
+  font-weight: 500;
+}
+
+.summary-order-sn {
+  margin-top: 16rpx;
+  color: #707072;
+  font-size: 24rpx;
+}
+
+.summary-total {
+  margin-top: 28rpx;
+  color: #d30005;
+  font-size: 44rpx;
+  font-weight: 500;
+}
+
+.detail-section {
+  padding: 48rpx 24rpx;
+  border-bottom: 1rpx solid #e5e5e5;
+  background: #ffffff;
+}
+
+.section-title {
+  margin-bottom: 20rpx;
+  color: #111111;
+  font-size: 36rpx;
+  font-weight: 500;
+}
+
+.address-text,
+.note-text {
+  color: #39393b;
+  line-height: 40rpx;
+}
+
+.detail-item {
+  display: flex;
+  padding: 20rpx 0;
+  border-top: 1rpx solid #e5e5e5;
+}
+
+.item-image {
+  flex: 0 0 140rpx;
+  width: 140rpx;
+  height: 140rpx;
+  background: #f5f5f5;
+}
+
+.image-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #707072;
+  font-size: 20rpx;
+}
+
+.item-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+  margin-left: 20rpx;
+}
+
+.item-name {
+  color: #111111;
+  font-size: 28rpx;
+  line-height: 40rpx;
+}
+
+.item-bottom {
+  display: flex;
+  justify-content: space-between;
+  color: #707072;
+  font-size: 24rpx;
+}
+
+.note-section {
+  margin-bottom: 40rpx;
+}

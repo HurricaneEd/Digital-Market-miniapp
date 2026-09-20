@@ -1,0 +1,82 @@
+<view class="detail-page">
+  <view class="state-panel" wx:if="{{ loading }}">
+    <van-loading size="24px">详情加载中</van-loading>
+  </view>
+  <view class="state-panel error-text" wx:elif="{{ error }}">
+    <text>{{ error }}</text>
+    <van-button size="small" plain type="primary" bindtap="retry">重试</van-button>
+  </view>
+  <van-empty wx:elif="{{ !product }}" description="商品不存在" />
+  <block wx:else>
+    <view class="detail-card">
+      <image wx:if="{{ product.imageUrl }}" class="detail-image" src="{{ product.imageUrl }}" mode="aspectFit" />
+      <view wx:else class="detail-image image-placeholder">暂无图片</view>
+      <view class="detail-main">
+        <view class="detail-name">{{ product.name }}</view>
+        <view class="detail-price">¥{{ product.displayPrice }}</view>
+        <view class="detail-tags">
+          <van-tag plain round color="#111111">{{ product.brand_name }}</van-tag>
+          <van-tag plain round color="#111111">{{ product.category_name }}</van-tag>
+          <text class="stock-label">{{ product.stockLabel }}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="info-section">
+      <view class="section-title">商品信息</view>
+      <view class="info-row">
+        <text class="info-label">商品编号</text>
+        <text class="info-value">{{ product.prod_id }}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">产地</text>
+        <text class="info-value">{{ product.origin || '未填写' }}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">评分</text>
+        <text class="info-value">{{ product.rate || 0 }} 分（{{ product.comment_count || 0 }} 条评论）</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">商品状态</text>
+        <text class="info-value">{{ product.is_active ? '在售' : '已下架' }}</text>
+      </view>
+    </view>
+
+    <view class="info-section" wx:if="{{ parameterGroups.length }}">
+      <view class="section-title">商品参数</view>
+      <view wx:for="{{ parameterGroups }}" wx:key="name" class="param-group">
+        <view class="param-group-name">{{ item.name }}</view>
+        <view wx:for="{{ item.entries }}" wx:for-item="entry" wx:key="key" class="info-row">
+          <text class="info-label">{{ entry.key }}</text>
+          <text class="info-value">{{ entry.value }}</text>
+        </view>
+      </view>
+    </view>
+
+    <van-goods-action>
+      <van-goods-action-icon icon="chat-o" text="客服" open-type="contact" />
+      <van-goods-action-icon
+        icon="cart-o"
+        text="购物车"
+        info="{{ cartInfo }}"
+        bind:click="openCart"
+      />
+      <van-goods-action-icon icon="shop-o" text="店铺" bind:click="openShop" />
+      <van-goods-action-button
+        color="#111111"
+        text="加入购物车"
+        type="warning"
+        loading="{{ addingCart }}"
+        disabled="{{ !product.is_active || product.stock <= 0 }}"
+        bind:click="addToCart"
+      />
+      <van-goods-action-button
+        plain
+        color="#111111"
+        text="立即购买"
+        disabled="{{ !product.is_active || product.stock <= 0 }}"
+        bind:click="buyNow"
+      />
+    </van-goods-action>
+  </block>
+</view>
