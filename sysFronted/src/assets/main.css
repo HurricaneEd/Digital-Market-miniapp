@@ -1,0 +1,129 @@
+:root {
+  font-family: Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #111111;
+  background: #ffffff;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --ink: #111111;
+  --charcoal: #39393b;
+  --mute: #707072;
+  --canvas: #ffffff;
+  --soft-cloud: #f5f5f5;
+  --hairline: #cacacb;
+  --hairline-soft: #e5e5e5;
+  --success: #007d48;
+  --sale: #d30005;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background: var(--canvas);
+  color: var(--ink);
+  font-size: 14px;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+.el-button {
+  --el-button-border-radius: 999px;
+  box-shadow: none !important;
+  font-weight: 500;
+}
+
+.el-button--primary {
+  --el-button-bg-color: var(--ink);
+  --el-button-border-color: var(--ink);
+  --el-button-hover-bg-color: #39393b;
+  --el-button-hover-border-color: #39393b;
+  --el-button-active-bg-color: #111111;
+  --el-button-active-border-color: #111111;
+  --el-button-text-color: #ffffff;
+}
+
+.el-button--danger {
+  --el-button-border-radius: 999px;
+}
+
+.el-card {
+  --el-card-border-color: var(--hairline-soft);
+  --el-card-border-radius: 0;
+  box-shadow: none !important;
+}
+
+.el-tag {
+  --el-tag-border-radius: 999px;
+}
+
+.el-input__wrapper,
+.el-select__wrapper {
+  border-radius: 999px !important;
+  box-shadow: 0 0 0 1px var(--hairline) inset !important;
+}
+
+.el-input__wrapper.is-focus,
+.el-select__wrapper.is-focused {
+  box-shadow: 0 0 0 1px var(--ink) inset !important;
+}
+
+.el-textarea__inner {
+  border-color: var(--hairline) !important;
+  box-shadow: none !important;
+}
+
+.el-textarea__inner:focus {
+  border-color: var(--ink) !important;
+}
+
+.el-dialog {
+  --el-dialog-border-radius: 16px;
+  box-shadow: none !important;
+}
+
+.el-table {
+  --el-table-border-color: var(--hairline-soft);
+  --el-table-header-bg-color: var(--soft-cloud);
+  --el-table-row-hover-bg-color: #fafafa;
+  color: var(--ink);
+}
+
+.el-table th.el-table__cell {
+  color: var(--charcoal);
+  font-weight: 500;
+}
+
+.el-pagination button,
+.el-pagination .el-pager li {
+  border-radius: 999px !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
