@@ -1,0 +1,11 @@
+# Django API and backend tools (Python dependencies).
+# Vue management frontend dependencies are managed by sysFronted/package.json and
+# sysFronted/package-lock.json; install them with `cd sysFronted; npm ci`.
+Django==5.2.11
+djangorestframework==3.16.1
+django-cors-headers==4.9.0
+drf-yasg==1.21.15
+mysqlclient==2.2.7
+openpyxl==3.1.5
+requests==2.32.3
+lxml==5.4.0

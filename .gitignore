@@ -7,10 +7,9 @@ __pycache__/
 venv/
 
 # Local configuration and runtime data
-.env
 data/raw/
-media/avatars
-docs
+/backend/media/avatars/
+docs/*
 
 # IDE
 .idea/
@@ -18,3 +17,10 @@ docs
 # WeChat mini program dependencies and build output
 /miniapp/node_modules/
 /miniapp/miniprogram_npm/
+
+# Vue admin frontend build and local configuration
+/sysFronted/node_modules/
+/sysFronted/dist/
+/sysFronted/.env
+/sysFronted/.env.*
+!/sysFronted/.env.example

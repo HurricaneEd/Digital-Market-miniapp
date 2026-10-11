@@ -20,20 +20,23 @@ DigRecSys 是一个数码商品交易项目。后端使用 Python 3.11、Django 
 
 ## 仓库地图
 
-- `DigRecSys/`：Django 全局设置、根路由、ASGI/WSGI 入口。
-- `Users/`：用户模型、认证、个人资料和后台用户接口。
-- `Product/`：品牌、分类、商品、评论及相关 API。
-- `Orders/`：地址、购物车、订单、订单明细及交易流程。
-- `crawl/`：商品采集脚本；输出原始 Excel/JSON，不直接写业务数据库。
-- `database/`：经过校验的商品入库工具和使用说明。
+- `sysFronted/`：Vue 管理后台。
+- `backend/`：Django 后端、业务应用、Python 依赖清单及后端工具。
+- `backend/DigRecSys/`：Django 全局设置、根路由、ASGI/WSGI 入口。
+- `backend/Users/`：用户模型、认证、个人资料和后台用户接口。
+- `backend/Product/`：品牌、分类、商品、评论及相关 API。
+- `backend/Orders/`：地址、购物车、订单、订单明细及交易流程。
+- `backend/crawl/`：商品采集脚本；输出原始 Excel/JSON，不直接写业务数据库。
+- `backend/database/`：经过校验的商品入库工具和使用说明。
+- `backend/requirements.txt`：Django API 与后端工具的 Python 依赖清单。
 - `data/raw/`：按批次保存的原始采集快照，不属于线上业务表。
 - `miniapp/`：微信原生小程序；`miniprogram_npm/` 是构建生成的第三方代码。
 - `docs/`：架构、验收、变更和测试等项目事实记录，项目UI样式设计规则。
 
 ## 架构约束
 
-- 根路由 `DigRecSys/urls.py` 只负责 `include` 应用路由、管理后台和 API 文档。
-- DRF Router 和 ViewSet 路由由 `Users/urls.py`、`Product/urls.py`、`Orders/urls.py` 分别维护。
+- 根路由 `backend/DigRecSys/urls.py` 只负责 `include` 应用路由、管理后台和 API 文档。
+- DRF Router 和 ViewSet 路由由 `backend/Users/urls.py`、`backend/Product/urls.py`、`backend/Orders/urls.py` 分别维护。
 - 线上商品统一使用 `Product`；不要重新引入 `CleanProduct` 或第二套商品事实来源。
 - 商品采用固定核心字段加 `all_params` JSON。品牌、分类、价格、库存、上下架状态不得重复塞入 JSON。
 - 不恢复 EAV 参数表、多图模型、`source_url`、`params_url` 或 `sub_images`，除非用户提出新的明确需求。
@@ -64,9 +67,9 @@ DigRecSys 是一个数码商品交易项目。后端使用 Python 3.11、Django 
 常用入库命令：
 
 ```powershell
-python database/import_products.py data/raw/<批次号>/products_raw.xlsx --dry-run
-python database/import_products.py data/raw/<批次号>/products_raw.xlsx
-python database/import_products.py data/raw/<批次号>/products_raw.json --allow-unapproved --dry-run
+python backend/database/import_products.py data/raw/<批次号>/products_raw.xlsx --dry-run
+python backend/database/import_products.py data/raw/<批次号>/products_raw.xlsx
+python backend/database/import_products.py data/raw/<批次号>/products_raw.json --allow-unapproved --dry-run
 ```
 
 ## Django/DRF 编码规则
@@ -79,7 +82,7 @@ python database/import_products.py data/raw/<批次号>/products_raw.json --allo
 - 沿用 `CONTEXT.md` 中的领域术语和现有英文标识；面向用户的提示保持中文一致性。
 - 优先做小而聚焦的修改，不借任务之机升级框架、替换数据库或重写无关模块。
 
-仓库当前没有 `requirements.txt` 或 `pyproject.toml`。不要声称依赖可由不存在的清单安装；新增生产依赖前先确认，并同步建立或更新依赖清单。
+后端 Python 依赖清单位于 `backend/requirements.txt`；仓库当前没有 `pyproject.toml`。新增生产依赖前先确认，并同步更新 `backend/requirements.txt`。
 
 ## 代码质量与简化规则
 
@@ -109,15 +112,16 @@ python database/import_products.py data/raw/<批次号>/products_raw.json --allo
 根据改动范围运行最小充分验证：
 
 ```powershell
-python manage.py check
-python manage.py makemigrations --check --dry-run
-python manage.py test Product
-python manage.py test Orders
-python manage.py test Users
-python manage.py test
+python backend/manage.py check
+python backend/manage.py makemigrations --check --dry-run
+python backend/manage.py test Product
+python backend/manage.py test Orders
+python backend/manage.py test Users
+python backend/manage.py test Users Product Orders
 ```
 
 - 修改单个应用时先运行该应用测试；修改共享模型、认证、订单或路由时运行所有相关应用测试。
+- 从仓库根目录运行测试时显式提供应用标签，确保发现 `backend/` 下的测试。
 - 数据库约束和事务变化优先使用真实 ORM/API 测试，不只做语法检查。
 - 文档或静态配置修改至少执行适用的格式/引用检查和 `git diff --check`。
 - 若测试依赖不可用、MySQL 测试库无权限或 GUI 环境无法运行，如实记录错误并标记未验证。
